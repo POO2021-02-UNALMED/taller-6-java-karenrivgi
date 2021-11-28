@@ -1,9 +1,5 @@
 package vehiculos;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 public class Vehiculo {
 	private String placa;
 	private int puertas;
@@ -14,9 +10,7 @@ public class Vehiculo {
 	private String traccion;
 	private Fabricante fabricante;
 	private static int cantidadVehiculos;
-	private static Map<Pais, Integer> ventasPorPais = new HashMap <Pais, Integer>();
-	private static Map<Fabricante, Integer> ventasPorFabrica = new HashMap <Fabricante, Integer>();
-
+	
 	public Vehiculo(String placa, int puertas, int velocidadMaxima, String nombre, int precio, int peso, String traccion, Fabricante fabricante) {
 
 		this.placa = placa;
@@ -27,49 +21,22 @@ public class Vehiculo {
 		this.peso = peso;
 		this.traccion = traccion;
 		this.fabricante = fabricante;
-		ventasPorPais.put(fabricante.getPais(), ventasPorPais.get(fabricante.getPais()) + 1);
-		ventasPorFabrica.put(fabricante, ventasPorFabrica.get(fabricante) + 1);
-		cantidadVehiculos++;
 		
+		if (Pais.ventasPorPais.containsKey(fabricante.getPais())) {
+			 Pais.ventasPorPais.put(fabricante.getPais(), Pais.ventasPorPais.get(fabricante.getPais()) + 1); 
+	    } else {
+	    	 Pais.ventasPorPais.put(fabricante.getPais(), 1);    
+	    }
+		
+		if (Fabricante.ventasPorFabrica.containsKey(fabricante)) {
+			Fabricante.ventasPorFabrica.put(fabricante, Fabricante.ventasPorFabrica.get(fabricante) + 1);
+	    } else {
+	    	Fabricante.ventasPorFabrica.put(fabricante, 1);
+	    }
+		
+		cantidadVehiculos++;	
 	}
 
-	public static Pais paisMasVendedor()
-	{
-		int valorMax = -1;
-		Pais paisMasVendedor = null;
-
-		for (Entry<Pais, Integer> entry : ventasPorPais.entrySet()) {
-		    final int valorActual = entry.getValue();
-
-		    if (valorActual > valorMax) 
-		    {
-		    	valorMax = valorActual;
-		    	paisMasVendedor = entry.getKey();
-		    } 	   
-		}
-		
-		return paisMasVendedor;
-	}
-	
-	public static Fabricante fabricaMayorVentas()
-	{
-		int valorMax = -1;
-		Fabricante fabricaMayorVentas = null;
-
-		for (Entry<Fabricante, Integer> entry : ventasPorFabrica.entrySet()) {
-		    final int valorActual = entry.getValue();
-
-		    if (valorActual > valorMax) 
-		    {
-		    	valorMax = valorActual;
-		    	fabricaMayorVentas = entry.getKey();
-		    } 	   
-		}
-		
-		return fabricaMayorVentas;
-	}
-
-	
 	public static int getCantidadVehiculos() {
 		return cantidadVehiculos;
 	}
